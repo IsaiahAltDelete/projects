@@ -2,15 +2,15 @@ import os
 import re
 
 # --- Configuration ---
-PROJECTS_LOCAL_DIR = r"C:\Users\Dizzy\Documents\Github\projects"  # Adjust as needed
+PROJECTS_LOCAL_DIR = r"C:\Users\Dizzy\Documents\Github\projects"  # Change as needed
 GITHUB_USERNAME = "IsaiahAltDelete"
 GITHUB_PROJECTS_BASE_URL = f"https://{GITHUB_USERNAME}.github.io/projects/"
-HTML_FILE_PATH = "index.html"  # Ensure this is the correct path
+HTML_FILE_PATH = "index.html"  # Path to your index.html file
 
 def get_project_folders():
     """
     Scans the PROJECTS_LOCAL_DIR for folders containing 'index.html',
-    skipping any folder that is named '.git'.
+    skipping the '.git' folder and any folder that starts with a dot.
     Returns a sorted (case-insensitive) list of project folder names.
     """
     project_folders = []
@@ -19,7 +19,7 @@ def get_project_folders():
         return project_folders
 
     for item in os.listdir(PROJECTS_LOCAL_DIR):
-        # Skip the .git folder and any folder that starts with a dot if desired
+        # Skip '.git' or any folder starting with a dot
         if item == ".git" or item.startswith('.'):
             continue
 
@@ -28,7 +28,7 @@ def get_project_folders():
             index_html_path = os.path.join(project_path, "index.html")
             if os.path.exists(index_html_path):
                 project_folders.append(item)
-    # Sort alphabetically in a case-insensitive manner
+    # Sort alphabetically (case-insensitive)
     return sorted(project_folders, key=lambda x: x.lower())
 
 def generate_project_html(project_name):
@@ -62,11 +62,11 @@ def update_html_directory(project_folders):
         print(f"Error: HTML file not found: {HTML_FILE_PATH}")
         return
 
-    # Regex pattern to find content between the markers (including newline characters)
+    # Use regex to replace content between markers
     pattern = r"(<!--\s*PROJECTS_START\s*-->)(.*?)(<!--\s*PROJECTS_END\s*-->)"
     replacement = r"\1\n" + projects_html + "\n\3"
-
     updated_html, count = re.subn(pattern, replacement, html_content, flags=re.DOTALL)
+
     if count == 0:
         print("Error: Could not find the markers in the HTML file.")
         return
@@ -78,6 +78,7 @@ def update_html_directory(project_folders):
 
 if __name__ == "__main__":
     project_folders = get_project_folders()
+    print("Detected project folders:", project_folders)  # Debug print
     if project_folders:
         update_html_directory(project_folders)
     else:
