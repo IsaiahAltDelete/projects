@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+@font-face {
+    font-family: 'Modesto Condensed';
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/webfonts/ModestoText-Medium.woff2') format('woff2');
+}
+
+body {
+    font-family: 'Modesto Condensed', serif;
+    background: #f0e6d2;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border: 2px solid #8b4513;
+    border-radius: 25px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.spellbook {
+    border: 3px double #8b4513;
+    padding: 20px;
+    margin: 20px 0;
+    background: #fff9e6;
+    border-radius: 20px;
+}
+
+.book-title {
+    text-align: center;
+    font-size: 28px;
+    color: #8b4513;
+    margin-bottom: 15px;
+}
+
+.book-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 15px;
+    margin: 15px 0;
+}
+
+.detail-item {
+    padding: 10px;
+    background: #f9f2e8;
+    border-radius: 12px;
+}
+
+.controls {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+button {
+    background: #8b4513;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 18px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #654321;
+    transform: scale(1.05);
+}
+
+.material {
+    font-style: italic;
+    margin-top: 10px;
+    padding: 10px;
+    background: #f5e6d3;
+    border-radius: 12px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h1 class="book-title">Mystical Spellbook Generator</h1>
+    <div class="controls">
+        <button onclick="generateSpellbook()">Generate New Spellbook</button>
+    </div>
+    <div id="spellbook-output"></div>
+</div>
+
+<script>
+const titles = [
+    "Grimoire of the Starweaver",
+    "Tome of Ethereal Bindings",
+    "Codex of the Moonweaver",
+    "Chronicle of Ancient Wards",
+    "Spellbook of Twilight Mysteries",
+    "Arcane Ledger of Dawn",
+    "Compendium of Mystic Arts",
+    "Book of Shadowed Verses"
+];
+
+const materials = [
+    "Bound in iridescent dragon scales with mithril clasps",
+    "Covered in moonstone-infused leather with glowing runes",
+    "Wrapped in petrified treant bark with living moss trim",
+    "Bound in thunderbird feathers with storm-charged silver bindings",
+    "Made from sheets of enchanted crystalline paper",
+    "Covered in shifting illusion-woven fabric",
+    "Bound in phoenix feather leather that's warm to touch",
+    "Wrapped in deep sea kraken hide that ripples like water"
+];
+
+const paperTypes = [
+    "Vellum infused with starlight",
+    "Pressed moonflower petals",
+    "Ethereal silk sheets",
+    "Mithril-dusted parchment",
+    "Cloud-woven pages",
+    "Crystal-embedded paper",
+    "Shadow-spun sheets",
+    "Dragon scale parchment"
+];
+
+const dimensions = [
+    { width: "6", height: "9", thickness: "2" },
+    { width: "8", height: "11", thickness: "3" },
+    { width: "7", height: "10", thickness: "2.5" },
+    { width: "9", height: "12", thickness: "4" },
+    { width: "5", height: "7", thickness: "1.5" }
+];
+
+const weights = [
+    "1.5 pounds", "2.3 pounds", "3.1 pounds",
+    "2.7 pounds", "4.2 pounds", "1.8 pounds"
+];
+
+const pageCount = [
+    "100", "150", "200", "250", "300", "350"
+];
+
+function getRandomItem(array) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function generateSpellbook() {
+    const title = getRandomItem(titles);
+    const material = getRandomItem(materials);
+    const paper = getRandomItem(paperTypes);
+    const dimension = getRandomItem(dimensions);
+    const weight = getRandomItem(weights);
+    const pages = getRandomItem(pageCount);
+
+    const spellbookHtml = `
+        <div class="spellbook">
+            <div class="book-title">${title}</div>
+            <div class="material">${material}</div>
+            <div class="book-details">
+                <div class="detail-item">
+                    <i class="fas fa-ruler-combined"></i> Dimensions: ${dimension.width}" × ${dimension.height}" × ${dimension.thickness}"
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-weight-hanging"></i> Weight: ${weight}
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-book-open"></i> Pages: ${pages} sheets of ${paper}
+                </div>
+                <div class="detail-item">
+                    <i class="fas fa-compress-alt"></i> Binding: Enhanced with magical wards
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('spellbook-output').innerHTML = spellbookHtml;
+}
+
+generateSpellbook();
+</script>
+</body>
+</html>
