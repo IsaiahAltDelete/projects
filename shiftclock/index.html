@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUNCH CLOCK SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #2ecc71;
+            --background-color: #ecf0f1;
+            --text-color: #34495e;
+            --border-radius: 16px;
+            --button-padding: 10px 20px;
+            --input-padding: 10px;
+            --popup-padding: 20px;
+            --notification-success-color: var(--secondary-color);
+            --notification-warning-color: #f39c12;
+            --notification-error-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: var(--popup-padding);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: var(--button-padding);
+            margin: 5px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            background-color: var(--primary-color);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .break { background-color: #f39c12; }
+        .remove-employee { background-color: #e74c3c; }
+        .break-end { background-color: var(--secondary-color); color: white; } /* Break End Button Style */
+
+        .button:hover {
+            opacity: 0.9;
+        }
+
+        select, input {
+            width: calc(100% - 20px);
+            padding: var(--input-padding);
+            margin-bottom: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        input[type="password"] {
+            -webkit-text-security: disc; /* For older Safari/Chrome */
+            -moz-text-security: disc; /* For Firefox */
+            text-security: disc; /* Standard */
+        }
+
+        #addNewEmployee {
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .popup-content {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: var(--popup-padding);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-color);
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-popup:hover {
+            opacity: 1;
+        }
+
+        #timesheet {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 10px;
+            overflow-x: auto; /* Added for horizontal scrolling on smaller screens */
+            display: block; /* Ensure table takes full width of container */
+        }
+
+        #timesheet th, #timesheet td {
+            border: 1px solid #bdc3c7;
+            padding: 8px;
+            text-align: left;
+            white-space: nowrap; /* Prevent text wrapping in table cells */
+        }
+
+        #timesheet th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        #timesheet td {
+            text-align: center;
+        }
+
+        #timesheet tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        #timesheet tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateX(100%);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success { background-color: var(--notification-success-color); }
+        .notification.warning { background-color: var(--notification-warning-color); }
+        .notification.error { background-color: var(--notification-error-color); }
+
+
+        #chartContainer {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 200px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e74c3c;
+            transition: .4s;
+            border-radius: 34px;
+            text-align: center;
+            line-height: 40px;
+            color: white;
+            font-weight: bold;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 32px;
+            width: 32px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--secondary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(160px);
+        }
+
+        #employeeList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #employeeList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #employeeList li:last-child {
+            border-bottom: none;
+        }
+
+
+        #pinPopup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        #pinPopup .popup-content {
+            background-color: white;
+            padding: var(--popup-padding);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        #pinPopup h2 {
+            margin-top: 0;
+        }
+
+        #pinPopup input {
+            font-size: 20px;
+            padding: var(--input-padding);
+            width: 80px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        #clock {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .employee-status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        .employee-status-indicator.in { background-color: var(--secondary-color); }
+        .employee-status-indicator.out { background-color: #e74c3c; }
+        .employee-status-indicator.break { background-color: #f39c12; }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .card {
+                padding: 15px;
+            }
+            .button, select, input {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+            #clock {
+                font-size: 1.5em;
+                top: 10px;
+                right: 10px;
+            }
+            .popup-content {
+                padding: 15px;
+            }
+            #pinPopup input {
+                font-size: 18px;
+                width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="clock"></div>
+    <div class="container">
+        <h1>PUNCH CLOCK SYSTEM</h1>
+        <div class="card">
+            <h2>Clock Actions</h2>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <select id="employeeSelect" aria-label="Select Employee">
+                    <option value="">Select Employee</option>
+                </select>
+                <button id="addNewEmployee" class="button" aria-label="Add New Employee">➕</button>
+            </div>
+            <div id="clockActions" style="margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                <label class="switch">
+                    <input type="checkbox" id="clockToggle">
+                    <span class="slider">Clocked Out</span>
+                </label>
+                <button class="button break" id="breakButton">Break Start</button>
+                <button class="button break-end" id="breakEndButton">Break End</button>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Timesheet Options</h2>
+            <button id="viewTimesheet" class="button">View Timesheet</button>
+            <button id="exportExcel" class="button">Export to Excel</button>
+            <button id="manageEmployees" class="button">Manage Employees</button>
+        </div>
+    </div>
+
+    <div id="addEmployeePopup" class="popup">
+        <div class="popup-content">
+            <h2>Add New Employee</h2>
+            <input type="text" id="firstName" placeholder="First Name" aria-label="First Name">
+            <input type="text" id="lastName" placeholder="Last Name" aria-label="Last Name">
+            <input type="text" id="position" placeholder="Position" aria-label="Position">
+            <input type="number" id="wage" placeholder="Hourly Wage" aria-label="Hourly Wage" step="0.01">
+            <input type="password" id="pin" placeholder="4-digit PIN" maxlength="4" aria-label="4-digit PIN">
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                <button id="submitNewEmployee" class="button">Add Employee</button>
+                <button id="closeAddEmployee" class="button close-popup" type="button">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="timesheetPopup" class="popup">
+        <div class="popup-content">
+            <h2>Timesheet</h2>
+            <button class="close-popup" id="closeTimesheet" aria-label="Close Timesheet">✖</button>
+            <div style="overflow-x: auto;">
+                <table id="timesheet">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Position</th>
+                            <th>Date</th>
+                            <th>Clock In</th>
+                            <th>Clock Out</th>
+                            <th>Break Start</th>
+                            <th>Break End</th>
+                            <th>Total Hours</th>
+                            <th>Earnings</th>
+                        </tr>
+                    </thead>
+                    <tbody id="timesheetBody"></tbody>
+                </table>
+            </div>
+            <div id="chartContainer">
+                <canvas id="hoursChart" role="img" aria-label="Bar chart of employee hours worked"></canvas>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="closeTimesheetBtn" class="button close-popup" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="manageEmployeesPopup" class="popup">
+        <div class="popup-content">
+            <h2>Manage Employees</h2>
+            <button class="close-popup" id="closeManageEmployees" aria-label="Close Manage Employees Popup">✖</button>
+            <ul id="employeeList"></ul>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="closeManageEmployeesBtn" class="button close-popup" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pinPopup" class="popup">
+        <div class="popup-content">
+            <h2>Enter PIN</h2>
+            <input type="password" id="pinInput" maxlength="4" aria-label="Enter 4-digit PIN">
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                <button id="submitPin" class="button">Submit</button>
+                <button class="button close-popup" id="closePinPopup" type="button" aria-label="Close PIN Popup">✖</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification" role="alert" aria-live="assertive"></div>
+
+    <script>
+        // Data structures
+        let employees = JSON.parse(localStorage.getItem('employees')) || [];
+        let timesheetData = JSON.parse(localStorage.getItem('timesheetData')) || [];
+        let pinAction = null;
+        let pinEmployeeId = null;
+        let originalToggleState = null;
+
+        // Helper functions
+        function getCurrentTime() {
+            return new Date().toLocaleString();
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem('employees', JSON.stringify(employees));
+                localStorage.setItem('timesheetData', JSON.stringify(timesheetData));
+            } catch (e) {
+                showNotification('Error saving data to local storage.', 'error');
+                console.error('Local storage error:', e); // Log error for debugging
+            }
+        }
+
+        function addEmployee(firstName, lastName, position, wage, pin) {
+            const newEmployee = {
+                id: employees.length + 1,
+                firstName: sanitizeInput(firstName), // Sanitize input
+                lastName: sanitizeInput(lastName),   // Sanitize input
+                position: sanitizeInput(position),   // Sanitize input
+                wage: parseFloat(wage),
+                pin,
+                status: 'out',
+                isOnBreak: false // Initialize break status
+            };
+            employees.push(newEmployee);
+            updateEmployeeDropdown();
+            saveData();
+        }
+
+        function removeEmployee(id) {
+            employees = employees.filter(emp => emp.id !== id);
+            timesheetData = timesheetData.filter(entry => entry.employeeId !== id);
+            updateEmployeeDropdown();
+            saveData();
+        }
+
+        function sanitizeInput(text) {
+            return text.trim(); // For now, just trim whitespace. More robust sanitization can be added.
+        }
+
+        function updateEmployeeDropdown() {
+            const select = document.getElementById('employeeSelect');
+            select.innerHTML = '<option value="">Select Employee</option>';
+            employees.forEach(emp => {
+                const option = document.createElement('option');
+                option.value = emp.id;
+                option.textContent = `${emp.lastName}, ${emp.firstName} - ${emp.position}`;
+                const statusIndicator = document.createElement('span');
+                statusIndicator.className = `employee-status-indicator employee-status-indicator.${emp.status === 'in' ? 'in' : (emp.isOnBreak ? 'break' : 'out')}`;
+                option.appendChild(statusIndicator);
+                select.appendChild(option);
+            });
+        }
+
+        function clockAction(employeeId, action) {
+            pinAction = action;
+            pinEmployeeId = employeeId;
+            originalToggleState = document.getElementById('clockToggle').checked;
+            document.getElementById('pinPopup').style.display = 'flex';
+            document.getElementById('pinInput').value = ''; // Clear previous pin input
+            document.getElementById('pinInput').focus();
+        }
+
+        document.getElementById('submitPin').addEventListener('click', handlePinSubmit);
+        document.getElementById('pinInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                handlePinSubmit();
+            }
+        });
+
+        function handlePinSubmit() {
+            const pin = document.getElementById('pinInput').value;
+            const employee = employees.find(emp => emp.id === pinEmployeeId);
+            if (employee && employee.pin === pin) {
+                let actionTaken = pinAction;
+                if (pinAction === 'Clock In') {
+                    employee.status = 'in';
+                    employee.isOnBreak = false; // Reset break status when clocking in
+                    document.querySelector('.slider').textContent = "Clocked In";
+                } else if (pinAction === 'Clock Out') {
+                    employee.status = 'out';
+                    employee.isOnBreak = false; // Reset break status when clocking out
+                    document.querySelector('.slider').textContent = "Clocked Out";
+                } else if (pinAction === 'Break Start') {
+                    if (employee.status !== 'in') {
+                        showNotification('Employee must be clocked in to take a break.', 'warning');
+                        document.getElementById('pinPopup').style.display = 'none';
+                        return;
+                    }
+                    employee.isOnBreak = true;
+                    actionTaken = 'Break Start'; // Explicitly set for timesheet
+                } else if (pinAction === 'Break End') {
+                    employee.isOnBreak = false;
+                    actionTaken = 'Break End'; // Explicitly set for timesheet
+                }
+
+                timesheetData.push({
+                    employeeId: pinEmployeeId,
+                    action: actionTaken,
+                    time: getCurrentTime()
+                });
+                saveData();
+                updateEmployeeDropdown(); // Update dropdown status indicator
+                showNotification(`${actionTaken} recorded for ${employee.firstName} ${employee.lastName}`, 'success');
+                document.getElementById('pinPopup').style.display = 'none';
+            } else {
+                showNotification('Invalid PIN. Please try again.', 'error');
+                document.getElementById('pinPopup').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('pinPopup').classList.remove('shake');
+                }, 500);
+                document.getElementById('clockToggle').checked = originalToggleState;
+            }
+        }
+
+        function calculateTotalHours(employeeData) {
+            let totalMinutes = 0;
+            let clockInTime = null;
+            let breakStartTime = null;
+            let totalBreakMinutes = 0;
+
+            employeeData.forEach((entry) => {
+                if (entry.action === 'Clock In') {
+                    clockInTime = new Date(entry.time);
+                    breakStartTime = null;
+                } else if (entry.action === 'Clock Out' && clockInTime) {
+                    const clockOutTime = new Date(entry.time);
+                    totalMinutes += (clockOutTime - clockInTime) / (1000 * 60);
+                    clockInTime = null;
+                } else if (entry.action === 'Break Start' && clockInTime) {
+                    breakStartTime = new Date(entry.time);
+                } else if (entry.action === 'Break End' && breakStartTime) {
+                    const breakEndTime = new Date(entry.time);
+                    totalBreakMinutes += (breakEndTime - breakStartTime) / (1000 * 60);
+                    breakStartTime = null;
+                }
+            });
+
+            totalMinutes = Math.max(0, totalMinutes - totalBreakMinutes);
+
+            return totalMinutes / 60;
+        }
+
+
+        function updateTimesheet() {
+            const tbody = document.getElementById('timesheetBody');
+            tbody.innerHTML = '';
+
+            const groupedData = {};
+
+            timesheetData.forEach(entry => {
+                const date = new Date(entry.time).toLocaleDateString();
+                const key = `${entry.employeeId}-${date}`;
+                if (!groupedData[key]) {
+                    groupedData[key] = {
+                        employeeId: entry.employeeId,
+                        date: date,
+                        actions: {}
+                    };
+                }
+                if (!groupedData[key].actions[entry.action]) {
+                    groupedData[key].actions[entry.action] = groupedData[key].actions[entry.action] || [];
+                    groupedData[key].actions[entry.action].push(entry.time);
+                }
+            });
+
+            Object.values(groupedData).forEach(dayData => {
+                const employee = employees.find(emp => emp.id === dayData.employeeId);
+                if (employee) {
+                    const row = tbody.insertRow();
+
+                    row.insertCell().textContent = `${employee.lastName}, ${employee.firstName}`;
+                    row.insertCell().textContent = employee.position;
+                    row.insertCell().textContent = dayData.date;
+
+                    row.insertCell().textContent = dayData.actions['Clock In'] ? dayData.actions['Clock In'][0] : '-';
+                    row.insertCell().textContent = dayData.actions['Clock Out'] ? dayData.actions['Clock Out'][dayData.actions['Clock Out'].length - 1] : '-';
+                    row.insertCell().textContent = dayData.actions['Break Start'] ? dayData.actions['Break Start'].join(', ') : '-';
+                    row.insertCell().textContent = dayData.actions['Break End'] ? dayData.actions['Break End'].join(', ') : '-';
+
+
+                    const employeeData = timesheetData.filter(entry =>
+                        entry.employeeId === dayData.employeeId &&
+                        new Date(entry.time).toLocaleDateString() === dayData.date
+                    );
+                    const totalHours = calculateTotalHours(employeeData);
+                    row.insertCell().textContent = `${totalHours.toFixed(2)} hours`;
+                    row.insertCell().textContent = `$${(totalHours * employee.wage).toFixed(2)}`;
+                }
+            });
+
+            updateChart();
+        }
+
+
+        function updateChart() {
+            const ctx = document.getElementById('hoursChart').getContext('2d');
+
+            const employeeHours = {};
+            employees.forEach(emp => {
+                employeeHours[emp.id] = 0;
+            });
+
+            timesheetData.forEach(entry => {
+                if (entry.action === 'Clock Out') {
+                    const clockInEntry = timesheetData.find(e => e.employeeId === entry.employeeId && e.action === 'Clock In' && new Date(e.time) < new Date(entry.time));
+                    if (clockInEntry) {
+                        const hours = (new Date(entry.time) - new Date(clockInEntry.time)) / (1000 * 60 * 60);
+                        employeeHours[entry.employeeId] += hours;
+                    }
+                }
+            });
+
+            const chartData = {
+                labels: employees.map(emp => `${emp.firstName} ${emp.lastName}`),
+                datasets: [{
+                    label: 'Total Hours Worked',
+                    data: employees.map(emp => employeeHours[emp.id]),
+                    backgroundColor: 'rgba(46, 204, 113, 0.6)',
+                    borderColor: 'rgba(46, 204, 113, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            if (window.myChart instanceof Chart) {
+                window.myChart.destroy();
+            }
+
+            window.myChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Hours'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        function exportToExcel() {
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.table_to_sheet(document.getElementById('timesheet'));
+            XLSX.utils.book_append_sheet(wb, ws, "Timesheet");
+            XLSX.writeFile(wb, "Timesheet.xlsx");
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`; // Added type class
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateManageEmployeesPopup() {
+            const list = document.getElementById('employeeList');
+            list.innerHTML = '';
+            employees.forEach(emp => {
+                const li = document.createElement('li');
+                li.textContent = `${emp.lastName}, ${emp.firstName} - ${emp.position}`;
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.className = 'remove-employee';
+                removeButton.onclick = () => {
+                    removeEmployee(emp.id);
+                    updateManageEmployeesPopup();
+                };
+                li.appendChild(removeButton);
+                list.appendChild(li);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('addNewEmployee').addEventListener('click', () => {
+            document.getElementById('addEmployeePopup').style.display = 'block';
+        });
+
+        document.getElementById('submitNewEmployee').addEventListener('click', () => {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const position = document.getElementById('position').value.trim();
+            const wage = document.getElementById('wage').value;
+            const pin = document.getElementById('pin').value;
+
+            if (!firstName || !lastName || !position || !wage || pin.length !== 4 || isNaN(wage) || parseFloat(wage) < 0) {
+                showNotification('Please fill in all fields correctly. Ensure PIN is 4 digits, Wage is a positive number.', 'warning');
+                return;
+            }
+
+
+            addEmployee(firstName, lastName, position, wage, pin);
+            document.getElementById('addEmployeePopup').style.display = 'none';
+            showNotification(`New employee ${firstName} ${lastName} added successfully.`, 'success');
+            document.getElementById('addEmployeePopup').querySelectorAll('input').forEach(input => input.value = ''); // Clear input fields
+        });
+
+
+        document.querySelectorAll('.close-popup').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.target.closest('.popup').style.display = 'none';
+            });
+        });
+
+        document.getElementById('clockToggle').addEventListener('change', (e) => {
+            const selectedEmployeeId = parseInt(document.getElementById('employeeSelect').value);
+            if (selectedEmployeeId) {
+                const action = e.target.checked ? 'Clock In' : 'Clock Out';
+                clockAction(selectedEmployeeId, action);
+            } else {
+                showNotification('Please select an employee first.', 'warning');
+                e.target.checked = !e.target.checked;
+            }
+        });
+
+        document.getElementById('breakButton').addEventListener('click', () => {
+            const selectedEmployeeId = parseInt(document.getElementById('employeeSelect').value);
+            if (selectedEmployeeId) {
+                clockAction(selectedEmployeeId, 'Break Start');
+            } else {
+                showNotification('Please select an employee first.', 'warning');
+            }
+        });
+
+        document.getElementById('breakEndButton').addEventListener('click', () => {
+            const selectedEmployeeId = parseInt(document.getElementById('employeeSelect').value);
+            if (selectedEmployeeId) {
+                const employee = employees.find(emp => emp.id === selectedEmployeeId);
+                if (employee.isOnBreak) {
+                    clockAction(selectedEmployeeId, 'Break End');
+                } else {
+                    showNotification('Employee is not on break.', 'warning');
+                }
+            } else {
+                showNotification('Please select an employee first.', 'warning');
+            }
+        });
+
+
+        document.getElementById('viewTimesheet').addEventListener('click', () => {
+            updateTimesheet();
+            document.getElementById('timesheetPopup').style.display = 'block';
+        });
+
+        document.getElementById('closeTimesheet').addEventListener('click', () => {
+            document.getElementById('timesheetPopup').style.display = 'none';
+        });
+
+        document.getElementById('exportExcel').addEventListener('click', exportToExcel);
+
+        document.getElementById('manageEmployees').addEventListener('click', () => {
+            updateManageEmployeesPopup();
+            document.getElementById('manageEmployeesPopup').style.display = 'block';
+        });
+
+        document.getElementById('closeManageEmployees').addEventListener('click', () => {
+            document.getElementById('manageEmployeesPopup').style.display = 'none';
+        });
+
+        document.getElementById('employeeSelect').addEventListener('change', (e) => {
+            const selectedEmployeeId = parseInt(e.target.value);
+            if (selectedEmployeeId) {
+                const employee = employees.find(emp => emp.id === selectedEmployeeId);
+                if (employee) {
+                    document.getElementById('clockToggle').checked = employee.status === 'in';
+                    document.querySelector('.slider').textContent = employee.status === 'in' ? "Clocked In" : "Clocked Out";
+                }
+            } else {
+                document.getElementById('clockToggle').checked = false;
+                document.querySelector('.slider').textContent = "Clocked Out";
+            }
+        });
+
+
+        function updateClock() {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('clock').textContent = formattedTime;
+        }
+
+        setInterval(updateClock, 1000);
+
+        // Initialize
+        window.onload = () => {
+            updateEmployeeDropdown();
+            updateClock();
+        };
+    </script>
+</body>
+</html>

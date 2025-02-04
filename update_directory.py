@@ -62,18 +62,23 @@ def update_html_directory(project_folders):
         print(f"Error: HTML file not found: {HTML_FILE_PATH}")
         return
 
+    print("HTML content BEFORE update:")
+    print(html_content)
+
     # Use regex to replace content between markers
     pattern = r"(<!--\s*PROJECTS_START\s*-->)(.*?)(<!--\s*PROJECTS_END\s*-->)"
     replacement = r"\1\n" + projects_html + "\n\3"
     updated_html, count = re.subn(pattern, replacement, html_content, flags=re.DOTALL)
 
     if count == 0:
-        print("Error: Could not find the markers in the HTML file.")
+        print("Error: Could not find the markers in the HTML file. Make sure they are intact!")
         return
 
     with open(HTML_FILE_PATH, "w", encoding="utf-8") as f:
         f.write(updated_html)
 
+    print("HTML content AFTER update:")
+    print(updated_html)
     print("Successfully updated project directory in index.html")
 
 if __name__ == "__main__":
