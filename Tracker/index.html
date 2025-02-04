@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✧･ﾟ: *☽ Your Browser Info ☾*:･ﾟ✧</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+        /* Custom cursor */
+        * {
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><text y='14' font-size='16'>💖</text></svg>"), auto;
+        }
+
+        body {
+            font-family: 'VT323', monospace;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #ffd1dc;
+            background-image:
+                linear-gradient(45deg, #ffe6f0 25%, transparent 25%),
+                linear-gradient(-45deg, #ffe6f0 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #ffe6f0 75%),
+                linear-gradient(-45deg, transparent 75%, #ffe6f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            color: #ff69b4;
+            font-size: 18px;
+        }
+
+        .marquee {
+            background: #ff69b4;
+            color: white;
+            padding: 10px;
+            margin: 20px 0;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .marquee span {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border: 3px solid #ff69b4;
+            border-radius: 8px;
+            box-shadow: 5px 5px 0 #ff69b4;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Hover effect transition */
+        }
+
+        .card:hover {
+            transform: scale(1.03); /* Slight scale up on hover */
+            box-shadow: 8px 8px 0 #ff69b4; /* Increased shadow on hover */
+        }
+
+
+        .card::before {
+            content: "♥";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #ff69b4;
+        }
+
+        .card h2 {
+            margin: 0 0 20px 0;
+            color: #ff69b4;
+            text-shadow: 2px 2px 0 #ffd1dc;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px dashed #ff69b4;
+            padding-bottom: 10px;
+            display: flex; /* For align-items */
+            align-items: center; /* Vertically center the title and icon */
+            justify-content: space-between; /* Space between title and icon */
+        }
+
+        .card h2 span.title-text {
+            margin-right: 10px; /* Add some space between title and icon if needed */
+        }
+
+        .info-item {
+            margin: 10px 0;
+            padding: 8px;
+            background: #ffe6f0;
+            border-radius: 4px;
+            border: 1px solid #ff69b4;
+            display: flex; /* For align-items */
+            align-items: center; /* Vertically center text and icon */
+        }
+
+        .info-item strong {
+            margin-right: 10px; /* Space between label and value */
+        }
+
+        .info-icon {
+            margin-right: 5px; /* Space between icon and text value */
+            font-size: 1.2em; /* Adjust icon size */
+        }
+
+
+        .warning {
+            color: #ff4081;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #4caf50;
+        }
+
+        /* Pixel art heart */
+        .pixel-heart {
+            display: inline-block;
+            position: relative;
+            width: 20px;
+            height: 20px;
+            background: #ff69b4;
+            transform: rotate(45deg);
+            margin: 0 10px;
+        }
+
+        .pixel-heart::before,
+        .pixel-heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff69b4;
+            border-radius: 50%;
+        }
+
+        .pixel-heart::before {
+            left: -10px;
+        }
+
+        .pixel-heart::after {
+            top: -10px;
+        }
+
+        /* Sparkles animation */
+        @keyframes sparkle {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .sparkle {
+            display: inline-block;
+            animation: sparkle 1.5s infinite;
+            color: #ffdf00;
+        }
+
+        /* Rainbow text effect */
+        @keyframes rainbow {
+            0% { color: #ff69b4; }
+            20% { color: #ff4081; }
+            40% { color: #e040fb; }
+            60% { color: #7c4dff; }
+            80% { color: #448aff; }
+            100% { color: #ff69b4; }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            animation: rainbow 5s infinite;
+            text-shadow: 3px 3px 0 #ffd1dc;
+            margin-bottom: 30px;
+        }
+
+        /* Blinking text effect */
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Button Styling */
+        .copy-button {
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'VT323', monospace;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
+        }
+
+        .copy-button:hover {
+            background-color: #ff4081;
+        }
+
+        .card-header-icons {
+            font-size: 1.5em; /* Adjust size of header icons */
+        }
+
+        .loading-indicator {
+            display: inline-block;
+            margin-left: 10px;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        /* Themed Scrollbar (Webkit - Chrome, Safari) */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ffe6f0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff69b4;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff4081;
+        }
+
+        /* Themed Scrollbar (Firefox) */
+        * {
+            scrollbar-color: #ff69b4 #ffe6f0;
+            scrollbar-width: thin;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>✧･ﾟ: *☽ Your Browser Info ☾*:･ﾟ✧</h1>
+
+    <div class="marquee">
+        <span>★・・・・・・ Tracking what tracks you! ・・・・・・ Stay cute & secure! ・・・・・・★</span>
+    </div>
+
+    <div class="container">
+        <!-- Basic Information -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✦</span> Basic Info <span class="sparkle">✦</span></span>
+                <span class="card-header-icons"> <i class="fas fa-info-circle"></i> </span>
+            </h2>
+            <div id="basicInfo"> <span class="loading-indicator" id="basicInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('basicInfo')">Copy</button>
+        </div>
+
+        <!-- Screen and Window -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✧</span> Screen & Window <span class="sparkle">✧</span></span>
+                <span class="card-header-icons"> <i class="fas fa-desktop"></i> </span>
+            </h2>
+            <div id="screenInfo"> <span class="loading-indicator" id="screenInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('screenInfo')">Copy</button>
+        </div>
+
+        <!-- System Information -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✦</span> System Info <span class="sparkle">✦</span></span>
+                <span class="card-header-icons"> <i class="fas fa-laptop"></i> </span>
+            </h2>
+            <div id="systemInfo"> <span class="loading-indicator" id="systemInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('systemInfo')">Copy</button>
+        </div>
+
+        <!-- Network Information -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✧</span> Network Info <span class="sparkle">✧</span></span>
+                <span class="card-header-icons"> <i class="fas fa-network-wired"></i> </span>
+            </h2>
+            <div id="networkInfo"> <span class="loading-indicator" id="networkInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('networkInfo')">Copy</button>
+        </div>
+
+        <!-- Hardware Information -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✦</span> Hardware Info <span class="sparkle">✦</span></span>
+                <span class="card-header-icons"> <i class="fas fa-microchip"></i> </span>
+            </h2>
+            <div id="hardwareInfo"> <span class="loading-indicator" id="hardwareInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('hardwareInfo')">Copy</button>
+        </div>
+
+        <!-- Permissions -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✧</span> Permissions <span class="sparkle">✧</span></span>
+                <span class="card-header-icons"> <i class="fas fa-lock-open"></i> </span>
+            </h2>
+            <div id="permissionInfo"> <span class="loading-indicator" id="permissionInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('permissionInfo')">Copy</button>
+        </div>
+
+        <!-- Storage Information -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✦</span> Storage Info <span class="sparkle">✦</span></span>
+                <span class="card-header-icons"> <i class="fas fa-database"></i> </span>
+            </h2>
+            <div id="storageInfo"> <span class="loading-indicator" id="storageInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('storageInfo')">Copy</button>
+        </div>
+
+        <!-- Battery Information -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">💖</span> Battery Info <span class="sparkle">💖</span></span>
+                <span class="card-header-icons"> <i class="fas fa-battery-full"></i> </span>
+            </h2>
+            <div id="batteryInfo"> <span class="loading-indicator" id="batteryInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('batteryInfo')">Copy</button>
+        </div>
+
+        <!-- Geolocation -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">📍</span> Geolocation <span class="sparkle">📍</span></span>
+                <span class="card-header-icons"> <i class="fas fa-map-marker-alt"></i> </span>
+            </h2>
+            <div id="geolocationInfo"> <span class="loading-indicator" id="geolocationInfoLoading">Click 'Get Location'</span></div>
+            <button id="getLocationButton" class="copy-button">Get Location</button>
+            <button class="copy-button" onclick="copyCardContent('geolocationInfo')">Copy</button>
+        </div>
+
+        <!-- IP Address Information -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">🌐</span> IP Address Info <span class="sparkle">🌐</span></span>
+                <span class="card-header-icons"> <i class="fas fa-globe"></i> </span>
+            </h2>
+            <div id="ipAddressInfo"> <span class="loading-indicator" id="ipAddressInfoLoading">Loading...</span></div>
+            <button class="copy-button" onclick="copyCardContent('ipAddressInfo')">Copy</button>
+        </div>
+
+        <!-- Canvas Fingerprint -->
+        <div class="card">
+            <h2>
+                <span class="title-text"><span class="sparkle">✦</span> Canvas Fingerprint <span class="sparkle">✦</span></span>
+                <span class="card-header-icons"> <i class="fas fa-fingerprint"></i> </span>
+            </h2>
+            <div id="canvasInfo"> <span class="loading-indicator" id="canvasInfoLoading">Loading...</span></div>
+            <canvas id="fingerprintCanvas" style="display: none;"></canvas>
+            <button class="copy-button" onclick="copyCardContent('canvasInfo')">Copy</button>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/your_fontawesome_kit.js"></script> <!-- Replace with your Font Awesome Kit -->
+
+    <script>
+        // Utility function to safely get nested objects
+        const safeGet = (fn) => {
+            try {
+                return fn();
+            } catch (e) {
+                return '✧ Not available ✧';
+            }
+        };
+
+        // Utility function to display information and hide loading
+        function displayInfo(elementId, info) {
+            const element = document.getElementById(elementId);
+            const loadingElement = document.getElementById(elementId + 'Loading');
+            element.innerHTML = Object.entries(info)
+                .map(([key, value]) => `
+                    <div class="info-item">
+                        <strong>${key}:</strong> <span class="info-icon"></span> ${value}
+                    </div>
+                `)
+                .join('');
+            if (loadingElement) {
+                loadingElement.style.display = 'none'; // Hide loading indicator
+            }
+        }
+
+        // Utility function to copy card content to clipboard
+        function copyCardContent(cardId) {
+            const cardElement = document.getElementById(cardId);
+            let textToCopy = "";
+            cardElement.querySelectorAll('.info-item').forEach(item => {
+                textToCopy += item.textContent + "\n";
+            });
+
+            navigator.clipboard.writeText(textToCopy.trim())
+                .then(() => {
+                    alert(`Information from "${cardId.replace(/Info$/, '')}" card copied to clipboard!`); // Kawaii alert could be better
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                    alert('Failed to copy information to clipboard.');
+                });
+        }
+
+
+        // Basic Information
+        function getBasicInfo() {
+            const info = {
+                '✧ User Agent': navigator.userAgent,
+                '✧ Browser Language': navigator.language,
+                '✧ Cookies Enabled': navigator.cookieEnabled ? '<span class="success">♡ Yes ♡</span>' : '<span class="warning">✘ No ✘</span>',
+                '✧ Do Not Track': navigator.doNotTrack,
+                '✧ Platform': navigator.platform,
+                '✧ Web Driver': navigator.webdriver ? '<span class="warning">⚠️ Yes (Automated Browser)</span>' : '<span class="success">♡ No ♡</span>',
+                '✧ Private Mode': !window.localStorage ? '<span class="success">♡ Likely Yes ♡</span>' : '<span class="warning">✘ Likely No ✘</span>'
+            };
+
+            displayInfo('basicInfo', info);
+        }
+
+        // Screen Information
+        function getScreenInfo() {
+            const info = {
+                '✧ Screen Resolution': `${screen.width}x${screen.height}`,
+                '✧ Available Screen': `${screen.availWidth}x${screen.availHeight}`,
+                '✧ Color Depth': `${screen.colorDepth} bits`,
+                '✧ Pixel Depth': `${screen.pixelDepth} bits`,
+                '✧ Window Size': `${window.innerWidth}x${window.innerHeight}`,
+                '✧ Device Pixel Ratio': window.devicePixelRatio
+            };
+
+            displayInfo('screenInfo', info);
+        }
+
+        // System Information
+        function getSystemInfo() {
+            const info = {
+                '✧ Operating System': safeGet(() => navigator.platform),
+                '✧ CPU Cores': safeGet(() => navigator.hardwareConcurrency),
+                '✧ Memory': safeGet(() => navigator.deviceMemory ? navigator.deviceMemory + 'GB' : '✧ Not available ✧'),
+                '✧ Max Touch Points': safeGet(() => navigator.maxTouchPoints),
+                '✧ PDF Viewer Built-in': safeGet(() => navigator.pdfViewerEnabled ? '<span class="success">♡ Yes ♡</span>' : '<span class="warning">✘ No ✘</span>')
+            };
+
+            displayInfo('systemInfo', info);
+        }
+
+        // Network Information
+        function getNetworkInfo() {
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            const info = {
+                '✧ Online Status': navigator.onLine ? '<span class="success">♡ Online ♡</span>' : '<span class="warning">✘ Offline ✘</span>',
+                '✧ Connection Type': safeGet(() => connection?.type || '✧ Not available ✧'),
+                '✧ Effective Type': safeGet(() => connection?.effectiveType || '✧ Not available ✧'),
+                '✧ Downlink': safeGet(() => connection?.downlink ? connection.downlink + ' Mbps' : '✧ Not available ✧'),
+                '✧ RTT': safeGet(() => connection?.rtt ? connection.rtt + ' ms' : '✧ Not available ✧')
+            };
+
+            displayInfo('networkInfo', info);
+        }
+
+        // Hardware Information
+        function getHardwareInfo() {
+            const info = {
+                '✧ GPU Vendor': safeGet(() => {
+                    const canvas = document.createElement('canvas');
+                    const gl = canvas.getContext('webgl');
+                    if (!gl) return '✧ Not available ✧';
+                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    return gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+                }),
+                '✧ GPU Renderer': safeGet(() => {
+                    const canvas = document.createElement('canvas');
+                    const gl = canvas.getContext('webgl');
+                    if (!gl) return '✧ Not available ✧';
+                    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                    return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                }),
+                '✧ Audio Output Devices': safeGet(async () => {
+                    const devices = await navigator.mediaDevices?.enumerateDevices();
+                    return devices ? devices.filter(device => device.kind === 'audiooutput').length : '✧ Not available ✧';
+                }),
+                '✧ Video Input Devices': safeGet(async () => {
+                    const devices = await navigator.mediaDevices?.enumerateDevices();
+                    return devices ? devices.filter(device => device.kind === 'videoinput').length : '✧ Not available ✧';
+                })
+            };
+
+            displayInfo('hardwareInfo', info);
+        }
+
+        // Permissions
+        async function getPermissions() {
+            const permissions = [
+                'geolocation',
+                'notifications',
+                'microphone',
+                'camera',
+                'clipboard-read',
+                'clipboard-write'
+            ];
+
+            const info = {};
+            for (const permission of permissions) {
+                info['✧ ' + permission] = safeGet(async () => {
+                    const result = await navigator.permissions.query({name: permission});
+                    return result.state === 'granted' ? '<span class="success">♡ Allowed ♡</span>' :
+                           result.state === 'denied' ? '<span class="warning">✘ Blocked ✘</span>' :
+                           '<span>? Not Set ?</span>';
+                }) || '✧ Not available ✧';
+            }
+
+            displayInfo('permissionInfo', info);
+        }
+
+        // Storage Information
+        async function getStorageInfo() {
+            const info = {
+                '✧ Cookies Enabled': navigator.cookieEnabled ? '<span class="success">♡ Yes ♡</span>' : '<span class="warning">✘ No ✘</span>',
+                '✧ Local Storage': safeGet(() => localStorage ? '<span class="success">♡ Available ♡</span>' : '<span class="warning">✘ Not available ✘</span>'),
+                '✧ Session Storage': safeGet(() => sessionStorage ? '<span class="success">♡ Available ♡</span>' : '<span class="warning">✘ Not available ✘</span>'),
+                '✧ IndexedDB': safeGet(() => window.indexedDB ? '<span class="success">♡ Available ♡</span>' : '<span class="warning">✘ Not available ✘</span>')
+            };
+
+            if (navigator.storage && navigator.storage.estimate) {
+                const estimate = await navigator.storage.estimate();
+                info['✧ Storage Usage'] = `${Math.round(estimate.usage / 1024 / 1024)} MB`;
+                info['✧ Storage Quota'] = `${Math.round(estimate.quota / 1024 / 1024)} MB`;
+            }
+
+            displayInfo('storageInfo', info);
+        }
+
+        // Battery Information
+        async function getBatteryInfo() {
+            const battery = await navigator.battery || navigator.getBattery(); // Compatibility for older browsers
+            if (!battery) {
+                displayInfo('batteryInfo', {'✧ Battery Status': 'Battery API not supported'});
+                return;
+            }
+
+            const info = {
+                '✧ Charging': battery.charging ? '<span class="success">♡ Yes ♡</span>' : '<span class="warning">✘ No ✘</span>',
+                '✧ Level': `${(battery.level * 100).toFixed(0)}%`,
+                '✧ Charging Time': battery.chargingTime === Infinity ? '✧ Not charging ✧' : `${battery.chargingTime / 60} minutes`,
+                '✧ Discharging Time': battery.dischargingTime === Infinity ? '✧ Charging or full ✧' : `${battery.dischargingTime / 60} minutes`
+            };
+            displayInfo('batteryInfo', info);
+
+            // Optional: Update battery info in real-time (for demonstration)
+            // battery.addEventListener('levelchange', () => getBatteryInfo());
+            // battery.addEventListener('chargingchange', () => getBatteryInfo());
+            // battery.addEventListener('chargingtimechange', () => getBatteryInfo());
+            // battery.addEventListener('dischargingtimechange', () => getBatteryInfo());
+        }
+
+        // Geolocation
+        function getGeolocation() {
+            const geolocationDiv = document.getElementById('geolocationInfo');
+            const loadingElement = document.getElementById('geolocationInfoLoading');
+            loadingElement.style.display = 'inline-block'; // Show loading
+            geolocationDiv.innerHTML = ''; // Clear previous content
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const info = {
+                        '✧ Latitude': position.coords.latitude,
+                        '✧ Longitude': position.coords.longitude,
+                        '✧ Accuracy': `${position.coords.accuracy} meters`
+                    };
+                    displayInfo('geolocationInfo', info);
+                },
+                (error) => {
+                    let errorMessage = 'Error getting geolocation: ';
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage += "Permission denied";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage += "Position unavailable";
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage += "Timeout";
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            errorMessage += "Unknown error";
+                            break;
+                    }
+                    displayInfo('geolocationInfo', {'✧ Geolocation': `<span class="warning">${errorMessage}</span>`});
+                }
+            );
+        }
+
+        // IP Address Information
+        async function getIPAddress() {
+            const ipAddressDiv = document.getElementById('ipAddressInfo');
+            const loadingElement = document.getElementById('ipAddressInfoLoading');
+            loadingElement.style.display = 'inline-block'; // Show loading
+            ipAddressDiv.innerHTML = ''; // Clear previous content
+
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                const info = {
+                    '✧ Public IP Address': data.ip
+                };
+                displayInfo('ipAddressInfo', info);
+            } catch (error) {
+                console.error('Error fetching IP address:', error);
+                displayInfo('ipAddressInfo', {'✧ IP Address': `<span class="warning">Failed to retrieve IP address</span>`});
+            }
+        }
+
+
+        // Canvas Fingerprint
+        function getCanvasFingerprint() {
+            const canvas = document.getElementById('fingerprintCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Draw various shapes and text
+            ctx.textBaseline = "top";
+            ctx.font = "14px 'Arial'";
+            ctx.textBaseline = "alphabetic";
+            ctx.fillStyle = "#ff69b4";
+            ctx.fillRect(125,1,62,20);
+            ctx.fillStyle = "#ffd1dc";
+            ctx.fillText("Hello, kawaii world!", 2, 15);
+            ctx.fillStyle = "rgba(255, 105, 180, 0.7)";
+            ctx.fillText("Hello, kawaii world!", 4, 17);
+
+            try {
+                const dataURL = canvas.toDataURL();
+                const hashCode = s => s.split('').reduce((a,b) => {a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+                document.getElementById('canvasInfo').innerHTML = `
+                    <div class="info-item">
+                        <strong>✧ Canvas Fingerprint Hash:</strong> <span class="info-icon"></span> ${hashCode(dataURL)}
+                    </div>
+                    <div class="info-item warning">
+                        <span class="pixel-heart"></span> This unique identifier can be used to track you across websites <span class="pixel-heart"></span>
+                    </div>`;
+                document.getElementById('canvasInfoLoading').style.display = 'none'; // Hide loading
+            } catch (e) {
+                document.getElementById('canvasInfo').innerHTML = `
+                    <div class="info-item warning">
+                        Unable to generate canvas fingerprint: ${e.message}
+                    </div>`;
+                document.getElementById('canvasInfoLoading').style.display = 'none'; // Hide loading even on error
+            }
+        }
+
+
+        // Initialize all information gathering
+        window.addEventListener('load', () => {
+            getBasicInfo();
+            getScreenInfo();
+            getSystemInfo();
+            getNetworkInfo();
+            getHardwareInfo();
+            getPermissions();
+            getStorageInfo();
+            getBatteryInfo(); // Get battery info on load
+            getGeolocation(); // Get geolocation on load (or when button clicked)
+            getIPAddress(); // Get IP Address on load
+            getCanvasFingerprint();
+
+            // Hide loading indicators after initial load (if they are still visible for any reason)
+            document.querySelectorAll('.loading-indicator').forEach(indicator => {
+                indicator.style.display = 'none';
+            });
+        });
+
+        // Event listener for Get Location button
+        document.getElementById('getLocationButton').addEventListener('click', getGeolocation);
+
+
+    </script>
+</body>
+</html>
