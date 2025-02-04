@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projects Directory</title>
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" 
+    rel="stylesheet">
+  <!-- Material Icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <style>
+    /* Your styling code from before */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fff;
+      color: #000;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .projects-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .project-folder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 120px;
+    }
+    .project-folder a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      transition: background-color 0.2s ease-in-out;
+    }
+    .project-folder a:hover {
+      background-color: #f0f0f0;
+    }
+    .project-folder a:focus,
+    .project-folder a:active {
+      outline: none !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+    .project-folder a::-moz-focus-inner {
+      border: 0;
+    }
+    .folder-icon {
+      font-size: 72px;
+      margin-bottom: 5px;
+    }
+    .project-name {
+      font-size: 14px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Projects</h1>
+  <div class="projects-container" id="projects-list">
+    <!-- PROJECTS_START -->
+
+    <div class="project-folder">
+      <a href="https://IsaiahAltDelete.github.io/projects/colorcircles/" class="project-link">
+        <i class="material-icons folder-icon">folder</i>
+        <span class="project-name">colorcircles</span>
+      </a>
+    </div>
+    
+
+    <div class="project-folder">
+      <a href="https://IsaiahAltDelete.github.io/projects/Tracker/" class="project-link">
+        <i class="material-icons folder-icon">folder</i>
+        <span class="project-name">tracker</span>
+      </a>
+    </div>
+    
+
+  </div>
+</body>
+</html>
